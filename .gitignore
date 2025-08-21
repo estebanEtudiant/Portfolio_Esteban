@@ -4,3 +4,6 @@ dist/
 *.log
 # caches (dont gh-pages)
 node_modules/.cache/
+node_modules/
+dist/
+node_modules/.cache/
