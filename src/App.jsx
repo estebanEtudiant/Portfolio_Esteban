@@ -1,24 +1,56 @@
 import React, { useEffect } from "react";
 import { motion } from "framer-motion";
 import { FaGithub, FaEnvelope, FaLinkedin, FaReact, FaNodeJs, FaTools, FaProjectDiagram, FaCode, FaLaptopCode } from "react-icons/fa";
-import { Line } from "react-chartjs-2";
-import { Chart as ChartJS, CategoryScale, LinearScale, PointElement, LineElement, Title, Tooltip, Legend } from 'chart.js';
 import Particles from "react-tsparticles";
 import { loadStarsPreset } from "tsparticles-preset-stars";
 
-ChartJS.register(CategoryScale, LinearScale, PointElement, LineElement, Title, Tooltip, Legend);
 
 
 import facturationImg from "./assets/facturation.png";
-import tetePhotoImg from "./assets/tete.jpg"
+import tetePhotoImg from "./assets/tete.jpeg"
+
+import ue41_pdf_export from "./assets/portfolio/Screenshot_facture.png";
+import ue41_templater from "./assets/portfolio/Screenshot_editeur.png";
+import ue41_security from "./assets/portfolio/Screenshot_secu.png";
+import ue45_invoices_table from "./assets/portfolio/Screenshot_list_facture.png";
+import ue45_settings_general from "./assets/portfolio/Screenshot_parametre.png";
+import ue45_smtp from "./assets/portfolio/Screenshot_config_email.png";
 
 
-const Section = ({ title, children, className = "" }) => (
+
+const Figure = ({ src, alt, title, legendItems = [], analysis = [] }) => (
+    <figure className="bg-gray-800/60 border border-gray-700 rounded-lg p-4 my-6">
+        <img src={src} alt={alt} loading="lazy"
+              className="w-full rounded-md border border-gray-700 min-h-[120px]" />
+        <figcaption className="mt-4 text-sm">
+            <p className="font-medium">{title}</p>
+            {legendItems.length > 0 && (
+                <ul className="mt-2 list-disc pl-5 space-y-1 text-gray-300">
+                    <li><b>Légende :</b></li>
+                    {legendItems.map((li, i) => <li key={i}>{li}</li>)}
+                </ul>
+            )}
+            {analysis.length > 0 && (
+                <div className="mt-3">
+                    <p className="font-medium">Analyse :</p>
+                    <ul className="list-disc pl-5 space-y-1 text-gray-300">
+                        {analysis.map((a, i) => <li key={i}>{a}</li>)}
+                    </ul>
+                </div>
+            )}
+        </figcaption>
+    </figure>
+);
+
+
+const Section = ({ title, children, className = "", id, reveal = true }) => (
     <motion.section
-        initial={{ opacity: 0, y: 30 }}
-        whileInView={{ opacity: 1, y: 0 }}
+        id={id}
+        initial={reveal ? { opacity: 0, y: 30 } : false}
+        animate={reveal ? undefined : { opacity: 1, y: 0 }}
+        whileInView={reveal ? { opacity: 1, y: 0 } : undefined}
         transition={{ duration: 0.7, ease: "easeOut" }}
-        viewport={{ once: true, amount: 0.3 }}
+        viewport={reveal ? { once: true, amount: 0.3 } : undefined}
         className={`py-16 px-6 max-w-5xl mx-auto ${className}`}
     >
         <h2 className="text-4xl sm:text-5xl font-extrabold mb-8 text-center text-white relative pb-4">
@@ -39,7 +71,7 @@ const Section = ({ title, children, className = "" }) => (
 
 const Card = ({ title, description, icon, technologies, link }) => (
     <motion.div
-        whileHover={{ scale: 1.03, boxShadow: "0 10px 20px rgba(0, 0, 0, 0.3)" }}
+        whileHover={{ scale: 1.01 }}
         transition={{ type: "spring", stiffness: 300 }}
         className="bg-gray-800 rounded-xl shadow-lg p-6 border border-gray-700 flex flex-col h-full hover:border-blue-600 transition-colors duration-300"
     >
@@ -75,9 +107,9 @@ const Card = ({ title, description, icon, technologies, link }) => (
     </motion.div>
 );
 
-const ProjectCard = ({ title, description, technologies, link, imageSrc, imageAlt }) => (
+const ProjectCard = ({ title, description, highlights = [], technologies, link, imageSrc, imageAlt }) => (
     <motion.div
-        whileHover={{ scale: 1.02, boxShadow: "0 15px 30px rgba(0, 0, 0, 0.4)" }}
+        whileHover={{ scale: 1.01 }}
         transition={{ type: "spring", stiffness: 200 }}
         className="bg-gray-800 rounded-xl shadow-lg p-8 border border-gray-700 flex flex-col lg:flex-row gap-8 items-center"
     >
@@ -95,6 +127,12 @@ const ProjectCard = ({ title, description, technologies, link, imageSrc, imageAl
         <div className="flex flex-col flex-grow lg:w-1/2 w-full">
             <h3 className="text-3xl font-bold text-white mb-4">{title}</h3>
             <p className="text-gray-300 text-lg mb-6 flex-grow">{description}</p>
+            {highlights.length > 0 && (
+                <ul className="text-gray-300 text-base mb-6 list-disc pl-5 space-y-1">
+                    {highlights.map((h, i) => <li key={i}>{h}</li>)}
+                </ul>
+            )}
+
             {technologies && (
                 <div className="mt-auto pt-4 border-t border-gray-600">
                     <p className="text-sm font-semibold text-gray-400 mb-2">Technologies utilisées :</p>
@@ -126,101 +164,37 @@ const ProjectCard = ({ title, description, technologies, link, imageSrc, imageAl
     </motion.div>
 );
 
-const SkillChart = () => {
-    const data = {
-        labels: ["React", "Node.js", "Prisma", "PostgreSQL", "Tailwind CSS", "Axios"],
-        datasets: [
-            {
-                label: "Niveau",
-                data: [85, 75, 70, 65, 80, 70],
-                fill: true,
-                backgroundColor: "rgba(59, 130, 246, 0.2)",
-                borderColor: "#3B82F6",
-                pointBackgroundColor: "#3B82F6",
-                pointBorderColor: "#fff",
-                pointHoverBackgroundColor: "#fff",
-                pointHoverBorderColor: "#3B82F6",
-                tension: 0.4
-            }
-        ]
-    };
-
-    const options = {
-        responsive: true,
-        maintainAspectRatio: false,
-        plugins: {
-            legend: {
-                labels: { color: "#ccc" }
-            },
-            title: {
-                display: true,
-                text: "Mes compétences techniques (%)",
-                color: "#fff",
-                font: {
-                    size: 20,
-                    weight: "bold"
-                }
-            },
-            tooltip: {
-                backgroundColor: "rgba(0,0,0,0.7)",
-                titleColor: "#fff",
-                bodyColor: "#fff",
-                borderColor: "#3B82F6",
-                borderWidth: 1
-            }
-        },
-        scales: {
-            x: {
-                grid: {
-                    color: "rgba(255,255,255,0.1)"
-                },
-                ticks: { color: "#ccc" }
-            },
-            y: {
-                grid: {
-                    color: "rgba(255,255,255,0.1)"
-                },
-                ticks: {
-                    color: "#ccc",
-                    beginAtZero: true,
-                    max: 100,
-                    callback: function(value) {
-                        return value + "%";
-                    }
-                }
-            }
-        }
-    };
-
-    return (
-        <div className="mt-10 p-6 bg-gray-800 rounded-xl shadow-lg border border-gray-700" style={{ height: "400px" }}>
-            <Line data={data} options={options} />
-        </div>
-    );
-};
 
 const ScrollProgress = () => {
     useEffect(() => {
-        const progressBar = document.getElementById("scroll-progress");
-        const updateProgress = () => {
+        const el = document.getElementById("scroll-progress");
+        const update = () => {
+            if (!el) return;
             const scrollTop = window.scrollY;
             const docHeight = document.documentElement.scrollHeight - window.innerHeight;
-            const progress = (scrollTop / docHeight) * 100;
-            progressBar.style.width = `${progress}%`;
+            const progress = docHeight > 0 ? (scrollTop / docHeight) * 100 : 0;
+            el.style.width = `${progress}%`;
         };
-        window.addEventListener("scroll", updateProgress);
-        return () => window.removeEventListener("scroll", updateProgress);
+        update();
+        window.addEventListener("scroll", update, { passive: true });
+        return () => window.removeEventListener("scroll", update);
     }, []);
 
     return (
-        <div className="fixed top-0 left-0 h-1 bg-blue-400 z-50" id="scroll-progress"></div>
+        <div
+            id="scroll-progress"
+            className="fixed top-0 left-0 h-1 bg-blue-400 z-50"
+            style={{ width: 0 }}
+        />
     );
 };
 
+
 const StarParticles = () => {
-    const particlesInit = async (engine) => {
-        await loadStarsPreset(engine);
-    };
+    const isMobile = typeof window !== "undefined" && window.innerWidth < 640;
+    const count = isMobile ? 30 : 70;
+
+    const particlesInit = async (engine) => { await loadStarsPreset(engine); };
 
     return (
         <Particles
@@ -231,34 +205,19 @@ const StarParticles = () => {
                 background: { color: "#0f172a" },
                 fullScreen: { enable: true, zIndex: -1 },
                 particles: {
-                    color: {
-                        value: "#ADD8E6"
-                    },
-                    links: {
-                        color: "#ADD8E6",
-                        distance: 150,
-                        enable: true,
-                        opacity: 0.4,
-                        width: 1
-                    },
-                    move: {
-                        enable: true,
-                        speed: 0.5
-                    },
-                    number: {
-                        value: 80
-                    },
-                    opacity: {
-                        value: 0.5
-                    },
-                    size: {
-                        value: 2
-                    }
-                }
+                    color: { value: "#ADD8E6" },
+                    links: { color: "#ADD8E6", distance: isMobile ? 100 : 150, enable: true, opacity: 0.35, width: 1 },
+                    move: { enable: true, speed: isMobile ? 0.3 : 0.5 },
+                    number: { value: count },
+                    opacity: { value: 0.45 },
+                    size: { value: 2 }
+                },
+                detectRetina: true
             }}
         />
     );
 };
+
 
 const TimelineItem = ({ date, title, description, index }) => (
     <motion.div
@@ -281,25 +240,25 @@ const Timeline = () => (
             <TimelineItem
                 date="13 mai – 16 mai 2025"
                 title="Découverte de l’environnement"
-                description="Présentation de l’association, étude du système de facturation Excel, inventaire du parc informatique."
+                description="Cartographie du processus Excel, recueil besoins, périmètre fonctionnel priorisé."
                 index={0}
             />
             <TimelineItem
                 date="19 mai – 30 mai 2025"
                 title="Début du développement"
-                description="Conception du MCD, mise en place du backend (Node.js, Prisma) et de l’interface usagers en React."
+                description="MCD, scaffolding projet, endpoints CRUD usagers/services, UI de base."
                 index={1}
             />
             <TimelineItem
                 date="3 juin – 21 juin 2025"
                 title="Fonctionnalités avancées"
-                description="Génération PDF, édition inline, gestion mensuelle, configuration des paramètres de facturation."
+                description="Édition inline, tri/filtres, calculs mensuels, génération PDF, validations."
                 index={2}
             />
             <TimelineItem
                 date="24 juin – 11 juillet 2025"
                 title="Finalisation & optimisation"
-                description="Optimisation UX, organisation du code, test du système et rédaction du rapport."
+                description="Tests, simplification UX, corrections, doc d’installation/livraison."
                 index={3}
             />
         </div>
@@ -324,49 +283,62 @@ const ProfilePicture = () => (
 
 export default function App() {
     return (
-        <div className="font-sans bg-gray-950 text-white overflow-hidden relative">
-            <ScrollProgress />
-            <StarParticles />
+        <div className="font-sans bg-gray-950 text-white overflow-x-hidden relative">
+            <ScrollProgress/>
+            <StarParticles/>
 
             <motion.header
-                initial={{ opacity: 0, y: -100 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.8, ease: "easeOut" }}
-                className="bg-gradient-to-br from-gray-900 to-blue-950 text-white py-20 px-4 text-center shadow-2xl rounded-b-[8rem] relative z-10 border-b-4 border-blue-700"
+                initial={{opacity: 0, y: -100}}
+                animate={{opacity: 1, y: 0}}
+                transition={{duration: 0.8, ease: "easeOut"}}
+                className="bg-gradient-to-br from-gray-900 to-blue-950 text-white py-14 px-4 text-center shadow-xl rounded-b-3xl relative z-10 border-b border-blue-800/50"
             >
                 <motion.h1
-                    initial={{ scale: 0.8, opacity: 0 }}
-                    animate={{ scale: 1, opacity: 1 }}
-                    transition={{ delay: 0.3, duration: 0.6 }}
+                    initial={{scale: 0.8, opacity: 0}}
+                    animate={{scale: 1, opacity: 1}}
+                    transition={{delay: 0.3, duration: 0.6}}
                     className="text-6xl sm:text-7xl font-extrabold tracking-tight drop-shadow-lg leading-tight"
                 >
                     Esteban <span className="text-blue-400">Développeur Web</span>
                 </motion.h1>
                 <motion.p
-                    initial={{ opacity: 0, y: 20 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    transition={{ delay: 0.6, duration: 0.6 }}
+                    initial={{opacity: 0, y: 20}}
+                    animate={{opacity: 1, y: 0}}
+                    transition={{delay: 0.6, duration: 0.6}}
                     className="mt-6 text-2xl sm:text-3xl font-light max-w-2xl mx-auto text-gray-200"
                 >
-                    Étudiant en BUT Informatique, passionné par le développement d'applications web modernes et performantes.
+                    Étudiant en BUT Informatique, passionné par le développement d'applications web modernes et
+                    performantes.
                 </motion.p>
+                <div className="mt-6 flex flex-wrap gap-2 justify-center">
+  <span className="rounded-full border border-white/20 px-3 py-1 text-sm">
+    UE 4.1 – Réaliser un développement d’application
+  </span>
+                    <span className="rounded-full border border-white/20 px-3 py-1 text-sm">
+    UE 4.5 – Gérer des données de l’information
+  </span>
+                </div>
+
+
                 <motion.div
-                    initial={{ opacity: 0, y: 20 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    transition={{ delay: 0.9, duration: 0.6, staggerChildren: 0.2 }}
+                    initial={{opacity: 0, y: 20}}
+                    animate={{opacity: 1, y: 0}}
+                    transition={{delay: 0.9, duration: 0.6, staggerChildren: 0.2}}
                     className="mt-10 flex justify-center space-x-6"
                 >
                     <motion.a
-                        whileHover={{ scale: 1.05, backgroundColor: "#E0F2FE", color: "#1E40AF" }}
-                        whileTap={{ scale: 0.95 }}
+                        aria-label="Voir mes projets"
+                        whileHover={{scale: 1.05, backgroundColor: "#E0F2FE", color: "#1E40AF"}}
+                        whileTap={{scale: 0.95}}
                         href="#projets"
                         className="bg-white text-blue-700 py-3 px-8 rounded-full text-lg font-semibold shadow-lg hover:bg-blue-100 transition duration-300 transform hover:-translate-y-1"
                     >
                         Mes Projets
                     </motion.a>
                     <motion.a
-                        whileHover={{ scale: 1.05, backgroundColor: "#1E40AF", borderColor: "#1E40AF" }}
-                        whileTap={{ scale: 0.95 }}
+                        aria-label="Aller à la section Contact"
+                        whileHover={{scale: 1.05, backgroundColor: "#1E40AF", borderColor: "#1E40AF"}}
+                        whileTap={{scale: 0.95}}
                         href="#contact"
                         className="border-2 border-white text-white py-3 px-8 rounded-full text-lg font-semibold shadow-lg hover:bg-white hover:text-blue-700 transition duration-300 transform hover:-translate-y-1"
                     >
@@ -375,18 +347,154 @@ export default function App() {
                 </motion.div>
             </motion.header>
 
-            <Section title="À propos de moi" className="bg-gray-800/50 rounded-xl my-12 shadow-inner border border-gray-700 backdrop-blur-sm">
-                <ProfilePicture />
+            <Section title="À propos de moi"
+                     className="bg-gray-800/50 rounded-xl my-12 shadow-inner border border-gray-700 backdrop-blur-sm">
+                <ProfilePicture/>
                 <p>
-                    Étudiant en 2e année de BUT Informatique, j’ai récemment achevé un stage de 9 semaines (du 13 mai au 11 juillet 2025) au sein de l’APF France Handicap à Besançon. Cette expérience a été l'occasion de transformer mes connaissances théoriques en solutions concrètes.
+                    Étudiant en 2ᵉ année de BUT Informatique, j’ai réalisé un stage de 9 semaines (13 mai → 11 juillet
+                    2025) à l’APF France Handicap – Besançon, où j’ai développé une application web de facturation pour
+                    remplacer un suivi Excel.
                 </p>
                 <p>
-                    Mon projet principal fut le développement d’une application web de facturation, remplaçant un système Excel existant pour optimiser la gestion des usagers et des services. Ce portfolio met en lumière les compétences clés acquises et renforcées durant ce projet, notamment à travers les unités d’enseignement UE4.1 et UE4.2.
+                    Ce projet illustre les compétences <b>UE 4.1</b> (réaliser un développement d’application : React +
+                    API Node/Express, PDF, auth) et <b>UE 4.5</b> (gérer des données : modélisation PostgreSQL,
+                    requêtes, filtres, traçabilité).
                 </p>
                 <p>
-                    Je suis passionné par la création d'applications intuitives et robustes, et toujours à l'affût des nouvelles technologies pour enrichir mes compétences.
+                    J’aime concevoir des interfaces sobres et efficaces et transformer des besoins métiers en solutions
+                    fiables.
                 </p>
+
             </Section>
+
+            <Section title="Compétences (UE)" id="competences" reveal={false}
+                     className="bg-gray-800/40 rounded-xl my-12 border border-gray-700">
+                <article className="mb-10">
+                    <h3 className="text-xl font-semibold">UE 4.1 – Réaliser un développement d’application</h3>
+                    <ul className="mt-3 list-disc pl-5 space-y-2 text-base">
+                        <li><b>Architecture :</b> React (UI modulaire) + API Node/Express (auth, rôles, PDF).</li>
+                        <li><b>Qualité :</b> composants réutilisables, validation, gestion d’erreurs.</li>
+                        <li><b>Sécurité :</b> réinitialisation de mot de passe, journalisation connexions.</li>
+                        <li><b>Livrable :</b> appli utilisable + doc d’installation.</li>
+                    </ul>
+                    <div className="mt-3 text-sm opacity-80">
+                        <span className="font-medium">Traces :</span> captures (auth, PDF), extraits de code (routes,
+                        validation).
+                    </div>
+                </article>
+
+                <Figure
+                    src={ue41_pdf_export}
+                    alt="Sélection du mois et export PDF des factures avec aperçu"
+                    title="UE 4.1 — Pipeline de génération de factures (sélection → rendu → PDF)"
+                    legendItems={[
+                        "Bleu : sélection du mois et des modèles.",
+                        "Vert : action de génération (impression/export PDF).",
+                        "Gris : aperçu fidèle du document final."
+                    ]}
+                    analysis={[
+                        "Savoir : structurer un flux de production (sources de données → rendu → livrable PDF).",
+                        "Savoir-faire : câblage UI + service d’export (React + ReactToPrint) avec états cohérents.",
+                        "Impact : livrable standardisé, impression en lot, réduction d’erreurs manuelles."
+                    ]}
+                />
+
+                <Figure
+                    src={ue41_templater}
+                    alt="Éditeur visuel de modèle de facture avec variables"
+                    title="UE 4.1 — Conception de template dynamique (liaison données → variables)"
+                    legendItems={[
+                        "Bleu : bloc éditable du template.",
+                        "Accolades {{...}} : variables injectées (date, numéro, usager, prix).",
+                        "Panneaux latéraux : calques, styles, propriétés."
+                    ]}
+                    analysis={[
+                        "Savoir : templating et séparation contenu/présentation.",
+                        "Savoir-faire : création d’un modèle éditable (GrapesJS-like) relié aux champs de l’app.",
+                        "Impact : autonomie métier pour ajuster la mise en page sans toucher le code."
+                    ]}
+                />
+
+                <Figure
+                    src={ue41_security}
+                    alt="Écran sécurité : code admin requis et email d’administration"
+                    title="UE 4.1 — UX & sécurité d’administration (verrouillage des champs sensibles)"
+                    legendItems={[
+                        "Champ code admin : déverrouille l’édition sécurisée.",
+                        "Email admin : utilisé pour la réinitialisation du code.",
+                        "Boutons d’action : validation, enregistrement."
+                    ]}
+                    analysis={[
+                        "Savoir : principes d’UX sécurisée (verrouillage, feedback, rôles).",
+                        "Savoir-faire : mise en place de garde-fous côté UI et flux de reset administrateur.",
+                        "Impact : réduction des erreurs et protection des paramètres sensibles."
+                    ]}
+                />
+
+
+                <article>
+                    <h3 className="text-xl font-semibold">UE 4.5 – Gérer des données de l’information</h3>
+                    <ul className="mt-3 list-disc pl-5 space-y-2 text-base">
+                        <li><b>Modélisation & SQL :</b> schéma PostgreSQL, vues, index.</li>
+                        <li><b>Intégration :</b> requêtes paramétrées, filtres, pagination, agrégations.</li>
+                        <li><b>Traçabilité :</b> table de logs, graphiques de suivi.</li>
+                        <li><b>Valorisation :</b> heatmap/plots, export PDF, filtres dynamiques.</li>
+                    </ul>
+                    <div className="mt-3 text-sm opacity-80">
+                        <span className="font-medium">Traces :</span> schéma DB, requêtes, captures (filtres/exports).
+                    </div>
+                </article>
+
+                <Figure
+                    src={ue45_invoices_table}
+                    alt="Tableau des factures avec filtres, statuts et actions (vue liste)"
+                    title="UE 4.5 — Vue liste pilotée par données (filtres, statuts, envoi par e-mail)"
+                    legendItems={[
+                        "Filtres (mois, modèle, tags) : requêtes paramétrées.",
+                        "Colonnes clés : mois, n° facture, type, total, statut.",
+                        "Icônes : prévisualisation, renvoi, suppression, envoi mail."
+                    ]}
+                    analysis={[
+                        "Savoir : modéliser et présenter des données transactionnelles.",
+                        "Savoir-faire : pagination/tri/filtre + synchronisation des statuts d’envoi.",
+                        "Impact : suivi opérationnel fiable (qu’est-ce qui est envoyé ? à qui ? quand ?)."
+                    ]}
+                />
+
+                <Figure
+                    src={ue45_settings_general}
+                    alt="Paramètres de facturation et jours d’ouverture mensuels"
+                    title="UE 4.5 — Paramétrage métier persistant (prix/forfait, modèle par défaut, jours d’ouverture)"
+                    legendItems={[
+                        "Champs : prix repas, forfait jour (données de référence).",
+                        "Sélecteurs : modèles par défaut (normal/repas).",
+                        "Bloc calendrier : ajout des jours d’ouverture par mois."
+                    ]}
+                    analysis={[
+                        "Savoir : gestion de référentiels et paramètres métiers persistants.",
+                        "Savoir-faire : stockage et restitution cohérente pour les calculs mensuels.",
+                        "Impact : transparence et reproductibilité des montants facturés."
+                    ]}
+                />
+
+                <Figure
+                    src={ue45_smtp}
+                    alt="Configuration SMTP sécurisée (serveur, port, identifiants masqués)"
+                    title="UE 4.5 — Intégration d’un canal d’envoi e-mail (SMTP) sécurisée"
+                    legendItems={[
+                        "Serveur/port : configuration réseau.",
+                        "Identifiants : champs masqués + déverrouillage sécurisé.",
+                        "Expéditeur : nom + adresse utilisés pour les envois automatiques."
+                    ]}
+                    analysis={[
+                        "Savoir : externaliser la configuration d’un service (SMTP) et protéger les secrets.",
+                        "Savoir-faire : paramétrage runtime + masquage des credentials avec flux de déverrouillage.",
+                        "Impact : acheminement fiable des factures par e-mail et traçabilité des envois."
+                    ]}
+                />
+
+            </Section>
+
 
             <Section title="Compétences Techniques">
                 <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
@@ -394,171 +502,234 @@ export default function App() {
                         title="Développement Frontend"
                         description="Maîtrise de React pour des interfaces utilisateur dynamiques et réactives. Expérience avec Tailwind CSS pour un stylisme rapide et efficace."
                         technologies={["React", "Tailwind CSS", "JavaScript", "HTML", "CSS"]}
-                        icon={<FaReact size={40} />}
+                        icon={<FaReact size={40}/>}
                     />
                     <Card
                         title="Développement Backend & BDD"
                         description="Conception et implémentation d'APIs robustes avec Node.js et Express. Gestion de bases de données relationnelles avec PostgreSQL et ORM Prisma."
                         technologies={["Node.js", "Express", "Prisma", "PostgreSQL"]}
-                        icon={<FaNodeJs size={40} />}
+                        icon={<FaNodeJs size={40}/>}
                     />
                     <Card
                         title="Optimisation & Qualité Log."
                         description="Application des principes de code propre, refactoring, gestion des états et optimisation des performances (useMemo, useCallback)."
                         technologies={["React Hooks", "useMemo", "useCallback", "Clean Code"]}
-                        icon={<FaTools size={40} />}
+                        icon={<FaTools size={40}/>}
                     />
                     <Card
                         title="Gestion de Projet & Autonomie"
                         description="Analyse fonctionnelle, modélisation (MCD), et gestion de projet autonome. Capacité à s'adapter aux besoins et à résoudre les problèmes."
                         technologies={["MCD", "Git", "Gestion de projet"]}
-                        icon={<FaProjectDiagram size={40} />}
+                        icon={<FaProjectDiagram size={40}/>}
                     />
                     <Card
                         title="Intégration & Déploiement"
                         description="Familiarisé avec les outils de versionnement (Git/GitHub) et les processus de déploiement continu."
                         technologies={["Git", "GitHub", "CI/CD"]}
-                        icon={<FaCode size={40} />}
+                        icon={<FaCode size={40}/>}
                     />
                     <Card
                         title="UI/UX Design"
                         description="Sensibilité aux principes de l'expérience utilisateur et de l'interface utilisateur pour des applications intuitives."
                         technologies={["Figma", "Wireframing", "Prototypage", "Accessibilité"]}
-                        icon={<FaLaptopCode size={40} />}
+                        icon={<FaLaptopCode size={40}/>}
                     />
                 </div>
-                <SkillChart />
+
             </Section>
 
-            <Section title="Mes Projets Clés" id="projets" className="bg-gradient-to-br from-gray-800 to-gray-900 rounded-xl my-12 shadow-lg border border-blue-700">
+            <Section title="Mes Projets Clés" id="projets"
+                     className="bg-gradient-to-br from-gray-800 to-gray-900 rounded-xl my-12 shadow-lg border border-blue-700">
                 <ProjectCard
                     title="Application Web de Facturation (Stage APF France Handicap)"
-                    description="Développement d'une application web complète pour la gestion des factures mensuelles des usagers. Projet full-stack de l'analyse des besoins à la mise en production. J'ai transformé un système Excel manuel en une solution numérique robuste, améliorant l'efficacité de la gestion des services et des usagers."
+                    description="Refonte du processus de facturation usagers (Excel → application web) du recueil au PDF final."
+                    highlights={[
+                        "Problème : feuilles Excel manuelles, erreurs et lenteurs.",
+                        "Solution : UI React + API Node/Express + Prisma/PostgreSQL, édition inline, tri/filtres, génération PDF.",
+                        "Impact : gains de temps et fiabilité, process centralisé et traçable."
+                    ]}
                     technologies={["React", "Tailwind CSS", "Node.js", "Express", "Prisma", "PostgreSQL", "Axios", "ReactToPrint"]}
-                    link="https://github.com/tonprofil/nom-du-repo-du-projet"
+                    link="https://github.com/estebanEtudiant/Facturation"
                     imageSrc={facturationImg}
                     imageAlt="Capture d'écran du projet de facturation"
                 />
+
+                <ProjectCard
+                    title="Application Web de Facturation (Stage APF France Handicap)"
+                    description="Refonte du processus de facturation usagers (Excel → application web) du recueil au PDF final."
+                    highlights={[
+                        "Problème : feuilles Excel manuelles, erreurs et lenteurs.",
+                        "Solution : UI React + API Node/Express + Prisma/PostgreSQL, édition inline, tri/filtres, génération PDF.",
+                        "Impact : gains de temps et fiabilité, process centralisé et traçable."
+                    ]}
+                    technologies={["React", "Tailwind CSS", "Node.js", "Express", "Prisma", "PostgreSQL", "Axios", "ReactToPrint"]}
+                    link="https://github.com/estebanEtudiant/Facturation"
+                    imageSrc={facturationImg}
+                    imageAlt="Capture d'écran du projet de facturation"
+                />
+
                 <p className="mt-8 text-center text-lg text-gray-300">
-                    Ce projet a été l'opportunité de concrétiser mes compétences en développant une solution utile et optimisée, en autonomie et en collaboration avec l'équipe.
+                    Ce projet a été l'opportunité de concrétiser mes compétences en développant une solution utile et
+                    optimisée, en autonomie et en collaboration avec l'équipe.
                 </p>
             </Section>
 
             <Section title="Mon Expérience en Stage">
                 <p className="text-gray-300">
-                    Mon stage à l'APF France Handicap à Besançon a été une immersion complète dans le cycle de vie d'un projet de développement logiciel. J'ai été responsable du projet de <strong className="text-blue-400">création d'une application web de facturation</strong>.
+                    Mon stage à l'APF France Handicap à Besançon a été une immersion complète dans le cycle de vie d'un
+                    projet de développement logiciel. J'ai été responsable du projet de <strong
+                    className="text-blue-400">création d'une application web de facturation</strong>.
                 </p>
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-8 mt-8">
                     <motion.div
-                        initial={{ opacity: 0, y: 30 }}
-                        whileInView={{ opacity: 1, y: 0 }}
-                        transition={{ duration: 0.7, ease: "easeOut", delay: 0.1 }}
-                        viewport={{ once: true, amount: 0.3 }}
+                        initial={{opacity: 0, y: 30}}
+                        whileInView={{opacity: 1, y: 0}}
+                        transition={{duration: 0.7, ease: "easeOut", delay: 0.1}}
+                        viewport={{once: true, amount: 0.3}}
                         className="bg-gray-800 p-6 rounded-lg shadow-md border border-gray-700"
                     >
                         <h3 className="text-2xl font-semibold text-white mb-4">Missions Principales</h3>
                         <ul className="list-disc list-inside space-y-3 text-lg text-gray-300">
-                            <motion.li initial={{ opacity: 0, x: -20 }} whileInView={{ opacity: 1, x: 0 }} transition={{ delay: 0.2 }}>Analyse détaillée du système de facturation existant (basé sur Excel) et des besoins utilisateurs.</motion.li>
-                            <motion.li initial={{ opacity: 0, x: -20 }} whileInView={{ opacity: 1, x: 0 }} transition={{ delay: 0.3 }}>Modélisation de la base de données (MCD) et conception de l'architecture de l'application.</motion.li>
-                            <motion.li initial={{ opacity: 0, x: -20 }} whileInView={{ opacity: 1, x: 0 }} transition={{ delay: 0.4 }}>Développement du <strong className="text-blue-400">frontend avec React et Tailwind CSS</strong> pour une interface intuitive.</motion.li>
-                            <motion.li initial={{ opacity: 0, x: -20 }} whileInView={{ opacity: 1, x: 0 }} transition={{ delay: 0.5 }}>Implémentation du <strong className="text-blue-400">backend avec Node.js, Express et Prisma</strong> pour la gestion des données.</motion.li>
-                            <motion.li initial={{ opacity: 0, x: -20 }} whileInView={{ opacity: 1, x: 0 }} transition={{ delay: 0.6 }}>Mise en place de fonctionnalités clés : édition inline, tri, filtres avancés, génération de factures PDF.</motion.li>
+                            <motion.li initial={{opacity: 0, x: -20}} whileInView={{opacity: 1, x: 0}}
+                                       transition={{delay: 0.2}}>Analyse détaillée du système de facturation existant
+                                (basé sur Excel) et des besoins utilisateurs.
+                            </motion.li>
+                            <motion.li initial={{opacity: 0, x: -20}} whileInView={{opacity: 1, x: 0}}
+                                       transition={{delay: 0.3}}>Modélisation de la base de données (MCD) et conception
+                                de l'architecture de l'application.
+                            </motion.li>
+                            <motion.li initial={{opacity: 0, x: -20}} whileInView={{opacity: 1, x: 0}}
+                                       transition={{delay: 0.4}}>Développement du <strong className="text-blue-400">frontend
+                                avec React et Tailwind CSS</strong> pour une interface intuitive.
+                            </motion.li>
+                            <motion.li initial={{opacity: 0, x: -20}} whileInView={{opacity: 1, x: 0}}
+                                       transition={{delay: 0.5}}>Implémentation du <strong className="text-blue-400">backend
+                                avec Node.js, Express et Prisma</strong> pour la gestion des données.
+                            </motion.li>
+                            <motion.li initial={{opacity: 0, x: -20}} whileInView={{opacity: 1, x: 0}}
+                                       transition={{delay: 0.6}}>Mise en place de fonctionnalités clés : édition inline,
+                                tri, filtres avancés, génération de factures PDF.
+                            </motion.li>
                         </ul>
                     </motion.div>
                     <motion.div
-                        initial={{ opacity: 0, y: 30 }}
-                        whileInView={{ opacity: 1, y: 0 }}
-                        transition={{ duration: 0.7, ease: "easeOut", delay: 0.2 }}
-                        viewport={{ once: true, amount: 0.3 }}
+                        initial={{opacity: 0, y: 30}}
+                        whileInView={{opacity: 1, y: 0}}
+                        transition={{duration: 0.7, ease: "easeOut", delay: 0.2}}
+                        viewport={{once: true, amount: 0.3}}
                         className="bg-gray-800 p-6 rounded-lg shadow-md border border-gray-700"
                     >
                         <h3 className="text-2xl font-semibold text-white mb-4">Apports & Réalisations</h3>
                         <ul className="list-disc list-inside space-y-3 text-lg text-gray-300">
-                            <motion.li initial={{ opacity: 0, x: 20 }} whileInView={{ opacity: 1, x: 0 }} transition={{ delay: 0.2 }}>Découverte et maîtrise de <strong className="text-blue-400">Prisma ORM</strong>, un outil puissant pour l'interaction avec la base de données.</motion.li>
-                            <motion.li initial={{ opacity: 0, x: 20 }} whileInView={{ opacity: 1, x: 0 }} transition={{ delay: 0.3 }}>Optimisation des performances de l'application (limitation des re-rendus React, gestion des appels API).</motion.li>
-                            <motion.li initial={{ opacity: 0, x: 20 }} whileInView={{ opacity: 1, x: 0 }} transition={{ delay: 0.4 }}>Amélioration significative de l'expérience utilisateur par l'intégration de fonctionnalités ergonomiques.</motion.li>
-                            <motion.li initial={{ opacity: 0, x: 20 }} whileInView={{ opacity: 1, x: 0 }} transition={{ delay: 0.5 }}>Contribution à l'organisation du parc informatique et installation de postes en autonomie.</motion.li>
-                            <motion.li initial={{ opacity: 0, x: 20 }} whileInView={{ opacity: 1, x: 0 }} transition={{ delay: 0.6 }}>Développement de compétences en autonomie, rigueur, et analyse fonctionnelle en contexte professionnel.</motion.li>
+                            <motion.li initial={{opacity: 0, x: 20}} whileInView={{opacity: 1, x: 0}}
+                                       transition={{delay: 0.2}}>Découverte et maîtrise de <strong
+                                className="text-blue-400">Prisma ORM</strong>, un outil puissant pour l'interaction avec
+                                la base de données.
+                            </motion.li>
+                            <motion.li initial={{opacity: 0, x: 20}} whileInView={{opacity: 1, x: 0}}
+                                       transition={{delay: 0.3}}>Optimisation des performances de l'application
+                                (limitation des re-rendus React, gestion des appels API).
+                            </motion.li>
+                            <motion.li initial={{opacity: 0, x: 20}} whileInView={{opacity: 1, x: 0}}
+                                       transition={{delay: 0.4}}>Amélioration significative de l'expérience utilisateur
+                                par l'intégration de fonctionnalités ergonomiques.
+                            </motion.li>
+                            <motion.li initial={{opacity: 0, x: 20}} whileInView={{opacity: 1, x: 0}}
+                                       transition={{delay: 0.5}}>Contribution à l'organisation du parc informatique et
+                                installation de postes en autonomie.
+                            </motion.li>
+                            <motion.li initial={{opacity: 0, x: 20}} whileInView={{opacity: 1, x: 0}}
+                                       transition={{delay: 0.6}}>Développement de compétences en autonomie, rigueur, et
+                                analyse fonctionnelle en contexte professionnel.
+                            </motion.li>
                         </ul>
                     </motion.div>
                 </div>
                 <p className="mt-8 text-center italic text-xl text-gray-400">
-                    "Ce stage a été une expérience transformatrice, me permettant de passer de la théorie à la pratique et de construire une application concrète qui répond à un besoin réel."
+                    "Ce stage a été une expérience transformatrice, me permettant de passer de la théorie à la pratique
+                    et de construire une application concrète qui répond à un besoin réel."
                 </p>
             </Section>
 
-            <Timeline />
+            <Timeline/>
 
             <Section title="Conclusion & Perspectives">
                 <p className="text-gray-300">
-                    Ce stage a solidifié ma passion pour le développement web et m'a doté de compétences pratiques essentielles. Je suis désormais mieux préparé à relever les défis de projets complexes et à apporter des solutions innovantes.
+                    Ce stage a solidifié ma passion pour le développement web et m'a doté de compétences pratiques
+                    essentielles. Je suis désormais mieux préparé à relever les défis de projets complexes et à apporter
+                    des solutions innovantes.
                 </p>
                 <p className="mt-4 text-gray-300">
-                    Je suis proactif, curieux et toujours désireux d'apprendre. Je suis à la recherche de nouvelles opportunités pour mettre mes compétences au service de projets ambitieux et continuer à grandir en tant que développeur.
+                    Je suis proactif, curieux et toujours désireux d'apprendre. Je suis à la recherche de nouvelles
+                    opportunités pour mettre mes compétences au service de projets ambitieux et continuer à grandir en
+                    tant que développeur.
                 </p>
                 <motion.div
-                    initial={{ opacity: 0, y: 20 }}
-                    whileInView={{ opacity: 1, y: 0 }}
-                    transition={{ delay: 0.4, duration: 0.6 }}
-                    viewport={{ once: true }}
+                    initial={{opacity: 0, y: 20}}
+                    whileInView={{opacity: 1, y: 0}}
+                    transition={{delay: 0.4, duration: 0.6}}
+                    viewport={{once: true}}
                     className="text-center mt-10"
                 >
-                    <p className="text-2xl font-semibold text-blue-400 mb-4">Prêt à collaborer sur votre prochain projet?</p>
+                    <p className="text-2xl font-semibold text-blue-400 mb-4">Prêt à collaborer sur votre prochain
+                        projet?</p>
                     <motion.a
-                        whileHover={{ scale: 1.05, backgroundColor: "#2563EB" }}
-                        whileTap={{ scale: 0.95 }}
+                        whileHover={{scale: 1.05, backgroundColor: "#2563EB"}}
+                        whileTap={{scale: 0.95}}
                         href="#contact"
                         className="inline-flex items-center justify-center px-8 py-4 border border-transparent text-base font-medium rounded-full text-white bg-blue-600 hover:bg-blue-700 transition duration-300 shadow-xl transform hover:-translate-y-1"
                     >
                         Discutons-en!
-                        <FaEnvelope className="ml-3 text-xl" />
+                        <FaEnvelope className="ml-3 text-xl"/>
                     </motion.a>
                 </motion.div>
             </Section>
 
-            <Section title="Me Contacter" id="contact" className="bg-gray-900 text-white rounded-t-[8rem] mt-12 shadow-2xl border-t-4 border-blue-700">
-                <p className="text-center text-xl mb-8 text-gray-300">N'hésitez pas à me contacter pour toute opportunité ou question!</p>
+            <Section title="Me Contacter" id="contact"
+                     className="bg-gray-900 text-white rounded-t-3xl mt-12 shadow-xl border-t border-blue-800/50">
+                <p className="text-center text-xl mb-8 text-gray-300">N'hésitez pas à me contacter pour toute
+                    opportunité ou question!</p>
                 <div className="flex justify-center space-x-8 text-4xl">
                     <motion.a
-                        whileHover={{ scale: 1.3, color: "#3B82F6" }}
+                        whileHover={{scale: 1.3, color: "#3B82F6"}}
                         href="mailto:esteban@example.com"
                         className="transition-colors duration-300"
                         aria-label="Envoyer un email"
                     >
-                        <FaEnvelope />
+                        <FaEnvelope/>
                     </motion.a>
                     <motion.a
-                        whileHover={{ scale: 1.3, color: "#60A5FA" }}
+                        whileHover={{scale: 1.3, color: "#60A5FA"}}
                         href="https://github.com/tonprofil"
                         target="_blank"
                         rel="noopener noreferrer"
                         className="transition-colors duration-300"
                         aria-label="Voir mon profil GitHub"
                     >
-                        <FaGithub />
+                        <FaGithub/>
                     </motion.a>
                     <motion.a
-                        whileHover={{ scale: 1.3, color: "#2563EB" }}
+                        whileHover={{scale: 1.3, color: "#2563EB"}}
                         href="https://linkedin.com/in/tonprofil"
                         target="_blank"
                         rel="noopener noreferrer"
                         className="transition-colors duration-300"
                         aria-label="Voir mon profil LinkedIn"
                     >
-                        <FaLinkedin />
+                        <FaLinkedin/>
                     </motion.a>
                 </div>
             </Section>
 
             <motion.footer
-                initial={{ opacity: 0 }}
-                animate={{ opacity: 1 }}
-                transition={{ delay: 0.5, duration: 1 }}
-                className="bg-gray-950 text-center py-8 text-sm text-gray-500 rounded-t-lg shadow-inner"
+                initial={{opacity: 0}}
+                animate={{opacity: 1}}
+                transition={{delay: 0.3, duration: 0.8}}
+                className="bg-gray-950 text-center py-6 text-sm text-gray-500"
             >
-                <p>© {new Date().getFullYear()} Esteban – Portfolio BUT Informatique. Tous droits réservés.</p>
-                <p className="mt-2 text-xs">Conçu avec React, Tailwind CSS et Framer Motion.</p>
+                <p>© {new Date().getFullYear()} Esteban — Portfolio BUT Informatique.</p>
             </motion.footer>
+
         </div>
     );
 }
