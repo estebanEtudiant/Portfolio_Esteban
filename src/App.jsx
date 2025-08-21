@@ -767,107 +767,59 @@ export default function App() {
             <Timeline/>
 
             <Section title="Objectifs de progression" id="progression">
-                <div className="bg-gray-900/40 border border-gray-700 rounded-lg p-4 text-base space-y-4">
-                    <p className="font-semibold text-lg">Bilan & pistes d’amélioration (niveau BUT2)</p>
+                <div className="bg-gray-900/40 border border-gray-700 rounded-lg p-4 text-base space-y-6">
+                    <p className="font-semibold text-lg">Bilan & pistes d’amélioration (ciblées)</p>
 
-                    {/* UE 4.1 */}
+                    {/* UE4.1 */}
                     <div>
-                        <p className="font-semibold">UE 4.1 — Produit & code</p>
+                        <p className="font-semibold">UE4.1 — Réaliser un développement d’application</p>
+
+                        <p className="mt-2 text-sm text-gray-300 font-medium">Ce que j’ai déjà fait</p>
+                        <ul className="list-disc pl-5 space-y-1">
+                            <li>Confirmation avant suppression.</li>
+                            <li>Messages d’erreur clairs côté interface (toasts) quand un champ obligatoire est manquant ou invalide.</li>
+                        </ul>
+
+                        <p className="mt-3 text-sm text-gray-300 font-medium">Ce que j’améliore ensuite</p>
                         <ul className="list-disc pl-5 space-y-2">
                             <li>
-                                <b>Règles de saisie cohérentes</b> (mêmes vérifications côté interface et côté API).
+                                <b>Harmoniser la validation entre le front et l’API</b>.
                                 <div className="text-gray-300 text-sm">
-                                    <span className="font-medium">But :</span> messages d’erreur clairs et identiques partout.<br/>
-                                    <span className="font-medium">Idée :</span> partager les mêmes règles de validation.
-                                </div>
-                            </li>
-
-                            <li>
-                                <b>Suppression plus sûre</b> (boîte de confirmation + possibilité d’annuler juste après).
-                                <div className="text-gray-300 text-sm">
-                                    <span className="font-medium">But :</span> éviter les suppressions par erreur.
-                                </div>
-                            </li>
-
-                            <li>
-                                <b>Retour visuel rapide</b> pour l’envoi d’e-mail (l’interface change tout de suite puis confirme avec le serveur).
-                                <div className="text-gray-300 text-sm">
-                                    <span className="font-medium">But :</span> interface plus réactive, sans incohérence.
-                                </div>
-                            </li>
-
-                            <li>
-                                <b>Composant réutilisable</b> {`<InvoiceRow />`} pour la ligne de facture.
-                                <div className="text-gray-300 text-sm">
-                                    <span className="font-medium">But :</span> code plus simple à maintenir quand la liste grandit.
-                                </div>
-                            </li>
-
-                            <li>
-                                <b>Accessibilité de base</b> (navigation au clavier, focus visible).
-                                <div className="text-gray-300 text-sm">
-                                    <span className="font-medium">But :</span> utilisation plus confortable pour tous.
+                                    <span className="font-medium">Pourquoi :</span> éviter les incohérences et avoir les mêmes règles partout.<br/>
+                                    <span className="font-medium">Comment :</span> définir un seul schéma de règles (champs obligatoires, formats) et l’utiliser des deux côtés.<br/>
+                                    <span className="font-medium">Critère :</span> un champ manquant renvoie un 400 côté API et affiche le même message sous le champ côté UI.
                                 </div>
                             </li>
                         </ul>
                     </div>
 
-                    {/* UE 4.4 */}
+                    {/* UE4.4 */}
                     <div>
-                        <p className="font-semibold">UE 4.4 — Données & perfs</p>
-                        <ul className="list-disc pl-5 space-y-2">
-                            <li>
-                                <b>Index sur les colonnes filtrées</b> (ex. mois, modèle, statut) + <b>numéro de facture unique</b> (année, numéro).
-                                <div className="text-gray-300 text-sm">
-                                    <span className="font-medium">But :</span> recherches plus rapides et numérotation fiable.
-                                </div>
-                            </li>
+                        <p className="font-semibold">UE4.4 — Gérer des données de l’information</p>
 
-                            <li>
-                                <b>Pagination côté serveur</b> avec <b>tri</b> et <b>recherche</b>.
-                                <div className="text-gray-300 text-sm">
-                                    <span className="font-medium">But :</span> réponses légères, tableau fluide même avec beaucoup de données.
-                                </div>
-                            </li>
-
-                            <li>
-                                <b>Export CSV</b> en respectant les filtres actifs.
-                                <div className="text-gray-300 text-sm">
-                                    <span className="font-medium">But :</span> partage direct dans Excel/LibreOffice.
-                                </div>
-                            </li>
-
-                            <li>
-                                <b>Journal d’envoi e-mail</b> (succès/échec, heure) avec quelques <b>réessais automatiques</b>.
-                                <div className="text-gray-300 text-sm">
-                                    <span className="font-medium">But :</span> comprendre rapidement les problèmes d’envoi.
-                                </div>
-                            </li>
+                        <p className="mt-2 text-sm text-gray-300 font-medium">Ce que j’ai déjà fait</p>
+                        <ul className="list-disc pl-5 space-y-1">
+                            <li>Index sur les colonnes de filtre + contrainte d’unicité sur le numéro de facture.</li>
+                            <li>Journal d’envoi des e-mails (succès/échec + horodatage) et barre de progression lors des envois.</li>
+                            <li>Tri et recherche sur la liste des factures.</li>
                         </ul>
-                    </div>
 
-                    {/* Transverse */}
-                    <div>
-                        <p className="font-semibold">Transverse — Qualité & usage</p>
+                        <p className="mt-3 text-sm text-gray-300 font-medium">Ce que j’améliore ensuite</p>
                         <ul className="list-disc pl-5 space-y-2">
                             <li>
-                                <b>Tester les chemins importants</b> (montant total, génération PDF, filtre par mois).
+                                <b>Export CSV</b> des factures selon les filtres affichés.
                                 <div className="text-gray-300 text-sm">
-                                    <span className="font-medium">But :</span> sécuriser ce qui sert tous les jours.
+                                    <span className="font-medium">Pourquoi :</span> partage rapide avec la compta ou Excel/LibreOffice.<br/>
+                                    <span className="font-medium">Comment :</span> ajouter un bouton “Exporter” qui reprend exactement les mêmes critères que la vue.<br/>
+                                    <span className="font-medium">Critère :</span> colonnes avec en-têtes clairs, séparateur correct, ouverture directe dans Excel.
                                 </div>
                             </li>
-
                             <li>
-                                <b>Configuration propre</b> (<code>.env.example</code> + vérification au démarrage).
+                                <b>Pagination côté serveur</b> pour la liste.
                                 <div className="text-gray-300 text-sm">
-                                    <span className="font-medium">But :</span> éviter les erreurs de variables manquantes.
-                                </div>
-                            </li>
-
-                            <li>
-                                <b>Mini check-list de recette</b> (ouvrir un modèle, générer un PDF, filtrer un mois, envoyer un mail test).
-                                <div className="text-gray-300 text-sm">
-                                    <span className="font-medium">But :</span> livrer sans bug bloquant.
+                                    <span className="font-medium">Pourquoi :</span> garder une interface fluide quand la liste grandit.<br/>
+                                    <span className="font-medium">Comment :</span> paramètres <code>?page=</code> et <code>?limit=</code> + boutons page précédente/suivante.<br/>
+                                    <span className="font-medium">Critère :</span> chargement de la première page rapide et navigation page suivante/précédente sans lenteurs.
                                 </div>
                             </li>
                         </ul>
@@ -878,9 +830,10 @@ export default function App() {
 
 
 
-            
 
-    <Section title="Conclusion">
+
+
+            <Section title="Conclusion">
         <p>
             Ce stage m’a surtout appris à <b>transformer un besoin métier en produit testable</b> : génération de documents fiable
             <i> (fig. 1)</i>, <b>écran liste</b> piloté par les données <i>(fig. 4)</i>, <b>paramétrage persistant</b> <i>(fig. 5)</i>
