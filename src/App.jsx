@@ -666,7 +666,7 @@ export default function App() {
 
                 <ProjectCard
                     title="Quantic Grand Prix (QuanticGP) — Événement F1"
-                    description="Application web full-stack pour un événement fictif de Formule 1 (style Monaco/GP Explorer) : billetterie, activités sur site et gestion des accès. Front en SPA Vue.js connecté à une API REST Express/Node ; sécurité par rôles et autorisations ; données relationnelles en MySQL."
+                    description="Application web full-stack pour un événement fictif de Formule 1 (style Monaco/GP Explorer) : billetterie, activités sur site et gestion des accès. Front en SPA Vue.js connecté à une API REST Express/Node ; sécurité par rôles et autorisations ; données relationnelles en PostgreSQL."
                     highlights={[
                         "SPA Vue.js : navigation fluide et composants réutilisables",
                         "API REST Express/Node : logique métier centralisée",
@@ -772,7 +772,7 @@ export default function App() {
 
                     {/* UE4.1 */}
                     <div>
-                        <p className="font-semibold">UE4.1 — Réaliser un développement d’application</p>
+                        <p className="font-semibold">UE 4.1 — Réaliser un développement d’application</p>
 
                         <p className="mt-2 text-sm text-gray-300 font-medium">Ce que j’ai déjà fait</p>
                         <ul className="list-disc pl-5 space-y-1">
@@ -842,7 +842,8 @@ export default function App() {
         </p>
         <ul className="list-disc pl-5 space-y-2">
             <li><b>Compétences consolidées</b> — UE 4.1 (conception, qualité, sécurité) et UE 4.4 (modélisation, filtres, traçabilité).</li>
-            <li><b>Points de vigilance</b> — Volume de données en impression, maintenabilité des gabarits.</li>
+            <li><b>Points de vigilance</b> — Latence à l’impression de listes longues et maintenabilité des gabarits.
+            </li>
             <li><b>Suite directe</b> — Les axes concrets sont listés dans <a href="#progression" className="underline">Objectifs de progression</a>.</li>
         </ul>
     </Section>
