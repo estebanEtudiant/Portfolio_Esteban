@@ -1,0 +1,6 @@
+node_modules/
+dist/
+.DS_Store
+*.log
+# caches (dont gh-pages)
+node_modules/.cache/
