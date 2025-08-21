@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { motion } from "framer-motion";
 import { FaGithub, FaEnvelope, FaLinkedin, FaReact, FaNodeJs, FaTools, FaProjectDiagram, FaCode, FaLaptopCode } from "react-icons/fa";
 import Particles from "react-tsparticles";
@@ -7,6 +7,7 @@ import { loadStarsPreset } from "tsparticles-preset-stars";
 
 
 import facturationImg from "./assets/facturation.png";
+import quanticImg from "./assets/QuanticGP.png";
 import tetePhotoImg from "./assets/tete.jpeg"
 
 import ue41_pdf_export from "./assets/portfolio/Screenshot_facture.png";
@@ -15,6 +16,7 @@ import ue41_security from "./assets/portfolio/Screenshot_secu.png";
 import ue45_invoices_table from "./assets/portfolio/Screenshot_list_facture.png";
 import ue45_settings_general from "./assets/portfolio/Screenshot_parametre.png";
 import ue45_smtp from "./assets/portfolio/Screenshot_config_email.png";
+
 
 
 
@@ -281,6 +283,44 @@ const ProfilePicture = () => (
     </motion.div>
 );
 
+const UECollapse = ({ id, title, defaultOpen = false, children }) => {
+    const [open, setOpen] = useState(defaultOpen);
+
+    return (
+        <section id={id} className="mb-6">
+            <div className="bg-gray-800/50 border border-gray-700 rounded-xl overflow-hidden">
+                <button
+                    type="button"
+                    onClick={() => setOpen(o => !o)}
+                    aria-expanded={open}
+                    aria-controls={`${id}-panel`}
+                    className="w-full flex items-center justify-between px-4 py-3 text-left"
+                >
+                    <span className="text-lg sm:text-xl font-semibold text-white">{title}</span>
+                    <svg
+                        className={`w-5 h-5 transition-transform ${open ? "rotate-180" : ""}`}
+                        viewBox="0 0 20 20" fill="currentColor" aria-hidden="true"
+                    >
+                        <path fillRule="evenodd"
+                              d="M5.23 7.21a.75.75 0 011.06.02L10 10.17l3.71-2.94a.75.75 0 011.04 1.08l-4.24 3.36a.75.75 0 01-.94 0L5.21 8.31a.75.75 0 01.02-1.1z"
+                              clipRule="evenodd" />
+                    </svg>
+                </button>
+
+                <div
+                    id={`${id}-panel`}
+                    className={`grid transition-all duration-300 ${open ? "grid-rows-[1fr] opacity-100" : "grid-rows-[0fr] opacity-0"}`}
+                >
+                    <div className="overflow-hidden px-4 pb-4 sm:px-6 sm:pb-6 text-gray-300">
+                        {children}
+                    </div>
+                </div>
+            </div>
+        </section>
+    );
+};
+
+
 export default function App() {
     return (
         <div className="font-sans bg-gray-950 text-white overflow-x-hidden relative">
@@ -311,12 +351,12 @@ export default function App() {
                     performantes.
                 </motion.p>
                 <div className="mt-6 flex flex-wrap gap-2 justify-center">
-  <span className="rounded-full border border-white/20 px-3 py-1 text-sm">
-    UE 4.1 – Réaliser un développement d’application
-  </span>
-                    <span className="rounded-full border border-white/20 px-3 py-1 text-sm">
-    UE 4.5 – Gérer des données de l’information
-  </span>
+                    <a href="#ue41" className="rounded-full border border-white/20 px-3 py-1 text-sm hover:bg-white/10">
+                        UE 4.1 – Réaliser un développement d’application
+                    </a>
+                    <a href="#ue45" className="rounded-full border border-white/20 px-3 py-1 text-sm hover:bg-white/10">
+                        UE 4.4 – Gérer des données de l’information
+                    </a>
                 </div>
 
 
@@ -347,151 +387,221 @@ export default function App() {
                 </motion.div>
             </motion.header>
 
-            <Section title="À propos de moi"
-                     className="bg-gray-800/50 rounded-xl my-12 shadow-inner border border-gray-700 backdrop-blur-sm">
-                <ProfilePicture/>
+            <Section title="À propos de moi" className="bg-gray-800/50 rounded-xl my-12 shadow-inner border border-gray-700 backdrop-blur-sm">
+                <ProfilePicture />
                 <p>
-                    Étudiant en 2ᵉ année de BUT Informatique, j’ai réalisé un stage de 9 semaines (13 mai → 11 juillet
-                    2025) à l’APF France Handicap – Besançon, où j’ai développé une application web de facturation pour
-                    remplacer un suivi Excel.
+                    Étudiant en 2ᵉ année de BUT Informatique, j’ai terminé un stage de 9 semaines (mai–juillet 2025) à l’APF France Handicap.
+                    J’y ai conçu et livré une application web de facturation de A à Z.
                 </p>
                 <p>
-                    Ce projet illustre les compétences <b>UE 4.1</b> (réaliser un développement d’application : React +
-                    API Node/Express, PDF, auth) et <b>UE 4.5</b> (gérer des données : modélisation PostgreSQL,
-                    requêtes, filtres, traçabilité).
+                    Ce portfolio met en évidence, via des <b>traces commentées</b>, les compétences validées en <b>UE 4.1</b> (développement d’application)
+                    et <b>UE 4.4</b> (gestion de données).
                 </p>
-                <p>
-                    J’aime concevoir des interfaces sobres et efficaces et transformer des besoins métiers en solutions
-                    fiables.
-                </p>
+
 
             </Section>
 
+
             <Section title="Compétences (UE)" id="competences" reveal={false}
                      className="bg-gray-800/40 rounded-xl my-12 border border-gray-700">
-                <article className="mb-10">
-                    <h3 className="text-xl font-semibold">UE 4.1 – Réaliser un développement d’application</h3>
-                    <ul className="mt-3 list-disc pl-5 space-y-2 text-base">
-                        <li><b>Architecture :</b> React (UI modulaire) + API Node/Express (auth, rôles, PDF).</li>
-                        <li><b>Qualité :</b> composants réutilisables, validation, gestion d’erreurs.</li>
-                        <li><b>Sécurité :</b> réinitialisation de mot de passe, journalisation connexions.</li>
-                        <li><b>Livrable :</b> appli utilisable + doc d’installation.</li>
+                <UECollapse id="ue41" title="UE 4.1 — Réaliser un développement d’application" defaultOpen={false}>
+                    <article className="mb-6">
+                        <ul className="list-disc pl-5 space-y-2 text-base">
+                            <li><b>Architecture :</b> React (UI modulaire) + API Node/Express (auth, rôles, PDF).</li>
+                            <li><b>Qualité :</b> composants réutilisables, validation, gestion d’erreurs.</li>
+                            <li><b>Sécurité :</b> réinitialisation de mot de passe, journalisation connexions.</li>
+                            <li><b>Livrable :</b> appli utilisable + doc d’installation.</li>
+                        </ul>
+                        <div className="mt-3 text-sm opacity-80">
+                            <span className="font-medium">Traces :</span> captures (auth, PDF), extraits de code
+                            (routes, validation).
+                        </div>
+                    </article>
+
+                    <p className="text-base text-gray-300">
+                        Pour garantir un rendu fiable et imprimable, j’ai conçu un pipeline de génération
+                        (sélection → rendu → PDF) <i>(voir figure 1)</i>. Le choix de ReactToPrint permet
+                        d’obtenir un PDF identique à l’aperçu, sans service externe.
+                    </p>
+
+                    <Figure
+                        src={ue41_pdf_export}
+                        alt="Sélection du mois et export PDF des factures avec aperçu"
+                        title="Figure 1 — UE 4.1 — Pipeline de génération de factures (sélection → rendu → PDF)"
+                        legendItems={[
+                            "Bleu : sélection du mois et des modèles.",
+                            "Vert : action de génération (impression/export PDF).",
+                            "Gris : aperçu fidèle du document final."
+                        ]}
+                        analysis={[
+                            "Savoir : structurer un flux de production (sources de données → rendu → livrable PDF).",
+                            "Savoir-faire : câblage UI + service d’export (React + ReactToPrint) avec états cohérents.",
+                            "Impact : livrable standardisé, impression en lot, réduction d’erreurs manuelles."
+                        ]}
+                    />
+
+                    <p className="mt-4 text-base text-gray-300">
+                        Le templating avec variables évite de toucher au code pour modifier la mise en page
+                        <i> (voir figure 2)</i>. Les accolades lient le contenu aux données (date, usager, prix).
+                    </p>
+
+                    <Figure
+                        src={ue41_templater}
+                        alt="Éditeur visuel de modèle de facture avec variables"
+                        title="Figure 2 - UE 4.1 — Conception de template dynamique (liaison données → variables)"
+                        legendItems={[
+                            "Bleu : bloc éditable du template.",
+                            "Accolades {{...}} : variables injectées (date, numéro, usager, prix).",
+                            "Panneaux latéraux : calques, styles, propriétés."
+                        ]}
+                        analysis={[
+                            "Savoir : templating et séparation contenu/présentation.",
+                            "Savoir-faire : création d’un modèle éditable (GrapesJS-like) relié aux champs de l’app.",
+                            "Impact : autonomie métier pour ajuster la mise en page sans toucher le code."
+                        ]}
+                    />
+
+                    <p className="mt-4 text-base text-gray-300">
+                        Côté administration, certaines zones sont verrouillées et nécessitent un code
+                        <i> (voir figure 3)</i> afin de limiter les erreurs et protéger les réglages sensibles.
+                    </p>
+
+                    <Figure
+                        src={ue41_security}
+                        alt="Écran sécurité : code admin requis et email d’administration"
+                        title="Figure 3 - UE 4.1 — UX & sécurité d’administration (verrouillage des champs sensibles)"
+                        legendItems={[
+                            "Champ code admin : déverrouille l’édition sécurisée.",
+                            "Email admin : utilisé pour la réinitialisation du code.",
+                            "Boutons d’action : validation, enregistrement."
+                        ]}
+                        analysis={[
+                            "Savoir : principes d’UX sécurisée (verrouillage, feedback, rôles).",
+                            "Savoir-faire : mise en place de garde-fous côté UI et flux de reset administrateur.",
+                            "Impact : réduction des erreurs et protection des paramètres sensibles."
+                        ]}
+                    />
+                </UECollapse>
+
+                <UECollapse id="ue45" title="UE 4.4 — Gérer des données de l’information">
+                    <article className="mb-6">
+                        <ul className="list-disc pl-5 space-y-2 text-base">
+                            <li><b>Modélisation & SQL :</b> schéma PostgreSQL, vues, index.</li>
+                            <li><b>Intégration :</b> requêtes paramétrées, filtres, pagination, agrégations.</li>
+                            <li><b>Traçabilité :</b> table de logs, graphiques de suivi.</li>
+                            <li><b>Valorisation :</b> heatmap/plots, export PDF, filtres dynamiques.</li>
+                        </ul>
+                        <div className="mt-3 text-sm opacity-80">
+                            <span className="font-medium">Traces :</span> schéma DB, requêtes, captures
+                            (filtres/exports).
+                        </div>
+                    </article>
+
+
+                    <p className="mt-4 text-base text-gray-300">
+                        La vue liste est alimentée par des <b>requêtes paramétrées</b> (mois, modèle, tags) et
+                        synchronise le <b>statut d’envoi</b> après chaque action (aperçu, renvoi, suppression, mail).
+                        L’objectif est d’offrir un suivi <b>opérationnel</b> fiable tout en gardant la navigation fluide
+                        <i> (voir figure&nbsp;4)</i>.
+                    </p>
+
+                    <Figure
+                        src={ue45_invoices_table}
+                        alt="Tableau des factures avec filtres, statuts et actions (vue liste)"
+                        title="Figure 4 - UE 4.4 — Vue liste pilotée par données (filtres, statuts, envoi par e-mail)"
+                        legendItems={[
+                            "Filtres (mois, modèle, tags) : requêtes paramétrées.",
+                            "Colonnes clés : mois, n° facture, type, total, statut.",
+                            "Icônes : prévisualisation, renvoi, suppression, envoi mail."
+                        ]}
+                        analysis={[
+                            "Savoir : modéliser et présenter des données transactionnelles.",
+                            "Savoir-faire : pagination/tri/filtre + synchronisation des statuts d’envoi.",
+                            "Impact : suivi opérationnel fiable (qu’est-ce qui est envoyé ? à qui ? quand ?)."
+                        ]}
+                    />
+
+                    <p className="mt-4 text-base text-gray-300">
+                        Le <b>paramétrage métier</b> (prix, forfait, modèles par défaut, jours d’ouverture) est
+                        centralisé
+                        et <b>persisté</b> pour garantir des calculs mensuels reproductibles. Chaque variable a un
+                        format
+                        contrôlé (bornes, types) afin de limiter les erreurs de saisie
+                        <i> (voir figure&nbsp;5)</i>.
+                    </p>
+
+                    <Figure
+                        src={ue45_settings_general}
+                        alt="Paramètres de facturation et jours d’ouverture mensuels"
+                        title="Figure 5 - UE 4.4 — Paramétrage métier persistant (prix/forfait, modèle par défaut, jours d’ouverture)"
+                        legendItems={[
+                            "Champs : prix repas, forfait jour (données de référence).",
+                            "Sélecteurs : modèles par défaut (normal/repas).",
+                            "Bloc calendrier : ajout des jours d’ouverture par mois."
+                        ]}
+                        analysis={[
+                            "Savoir : gestion de référentiels et paramètres métiers persistants.",
+                            "Savoir-faire : stockage et restitution cohérente pour les calculs mensuels.",
+                            "Impact : transparence et reproductibilité des montants facturés."
+                        ]}
+                    />
+
+                    <p className="mt-4 text-base text-gray-300">
+                        L’<b>envoi e-mail</b> s’appuie sur une configuration SMTP <b>sécurisée</b> : identifiants
+                        masqués,
+                        déverrouillage pour les champs sensibles, et expéditeur déclaré. Couplé à un journal d’envoi,
+                        cela
+                        apporte <b>traçabilité</b> et diagnostic en cas d’échec
+                        <i> (voir figure&nbsp;6)</i>.
+                    </p>
+
+                    <Figure
+                        src={ue45_smtp}
+                        alt="Configuration SMTP sécurisée (serveur, port, identifiants masqués)"
+                        title="Figure 6 - UE 4.4 — Intégration d’un canal d’envoi e-mail (SMTP) sécurisée"
+                        legendItems={[
+                            "Serveur/port : configuration réseau.",
+                            "Identifiants : champs masqués + déverrouillage sécurisé.",
+                            "Expéditeur : nom + adresse utilisés pour les envois automatiques."
+                        ]}
+                        analysis={[
+                            "Savoir : externaliser la configuration d’un service (SMTP) et protéger les secrets.",
+                            "Savoir-faire : paramétrage runtime + masquage des credentials avec flux de déverrouillage.",
+                            "Impact : acheminement fiable des factures par e-mail et traçabilité des envois."
+                        ]}
+                    />
+                </UECollapse>
+
+                <div className="bg-gray-900/40 border border-gray-700 rounded-lg p-4 text-base space-y-2">
+                    <p className="font-semibold">Synthèse réflexive (UE 4.1 / UE 4.4)</p>
+                    <ul className="list-disc pl-5 space-y-2">
+                        <li>
+                            <b>Décisions clés</b> — Pipeline de génération <i>(sélection → rendu → PDF)</i> pour un
+                            rendu fidèle
+                            <i> (voir figure&nbsp;1)</i> ; vue liste pilotée par filtres + statut d’envoi pour le suivi
+                            opérationnel
+                            <i> (voir figure&nbsp;4)</i>.
+                        </li>
+                        <li>
+                            <b>Apprentissages déterminants</b> — Validation bout-en-bout (front/back), modélisation
+                            relationnelle simple mais
+                            robuste, et paramétrage métier persistant <i>(voir figure&nbsp;5)</i>.
+                        </li>
+                        <li>
+                            <b>Limites assumées</b> — Impression de longues listes (latence), dépendance au navigateur
+                            pour le PDF, gabarits
+                            encore perfectibles. Contournements : filtrage/pagination, gabarits testés, journal d’envoi
+                            pour diagnostiquer
+                            <i> (voir figure&nbsp;6)</i>.
+                        </li>
+                        <li>
+                            <b>Transférabilité</b> — Le pattern “données → template → rendu → export” s’applique à
+                            devis, attestations, relevés
+                            d’heures, etc. (adapter juste l’ORM et le moteur d’export).
+                        </li>
                     </ul>
-                    <div className="mt-3 text-sm opacity-80">
-                        <span className="font-medium">Traces :</span> captures (auth, PDF), extraits de code (routes,
-                        validation).
-                    </div>
-                </article>
+                </div>
 
-                <Figure
-                    src={ue41_pdf_export}
-                    alt="Sélection du mois et export PDF des factures avec aperçu"
-                    title="UE 4.1 — Pipeline de génération de factures (sélection → rendu → PDF)"
-                    legendItems={[
-                        "Bleu : sélection du mois et des modèles.",
-                        "Vert : action de génération (impression/export PDF).",
-                        "Gris : aperçu fidèle du document final."
-                    ]}
-                    analysis={[
-                        "Savoir : structurer un flux de production (sources de données → rendu → livrable PDF).",
-                        "Savoir-faire : câblage UI + service d’export (React + ReactToPrint) avec états cohérents.",
-                        "Impact : livrable standardisé, impression en lot, réduction d’erreurs manuelles."
-                    ]}
-                />
-
-                <Figure
-                    src={ue41_templater}
-                    alt="Éditeur visuel de modèle de facture avec variables"
-                    title="UE 4.1 — Conception de template dynamique (liaison données → variables)"
-                    legendItems={[
-                        "Bleu : bloc éditable du template.",
-                        "Accolades {{...}} : variables injectées (date, numéro, usager, prix).",
-                        "Panneaux latéraux : calques, styles, propriétés."
-                    ]}
-                    analysis={[
-                        "Savoir : templating et séparation contenu/présentation.",
-                        "Savoir-faire : création d’un modèle éditable (GrapesJS-like) relié aux champs de l’app.",
-                        "Impact : autonomie métier pour ajuster la mise en page sans toucher le code."
-                    ]}
-                />
-
-                <Figure
-                    src={ue41_security}
-                    alt="Écran sécurité : code admin requis et email d’administration"
-                    title="UE 4.1 — UX & sécurité d’administration (verrouillage des champs sensibles)"
-                    legendItems={[
-                        "Champ code admin : déverrouille l’édition sécurisée.",
-                        "Email admin : utilisé pour la réinitialisation du code.",
-                        "Boutons d’action : validation, enregistrement."
-                    ]}
-                    analysis={[
-                        "Savoir : principes d’UX sécurisée (verrouillage, feedback, rôles).",
-                        "Savoir-faire : mise en place de garde-fous côté UI et flux de reset administrateur.",
-                        "Impact : réduction des erreurs et protection des paramètres sensibles."
-                    ]}
-                />
-
-
-                <article>
-                    <h3 className="text-xl font-semibold">UE 4.5 – Gérer des données de l’information</h3>
-                    <ul className="mt-3 list-disc pl-5 space-y-2 text-base">
-                        <li><b>Modélisation & SQL :</b> schéma PostgreSQL, vues, index.</li>
-                        <li><b>Intégration :</b> requêtes paramétrées, filtres, pagination, agrégations.</li>
-                        <li><b>Traçabilité :</b> table de logs, graphiques de suivi.</li>
-                        <li><b>Valorisation :</b> heatmap/plots, export PDF, filtres dynamiques.</li>
-                    </ul>
-                    <div className="mt-3 text-sm opacity-80">
-                        <span className="font-medium">Traces :</span> schéma DB, requêtes, captures (filtres/exports).
-                    </div>
-                </article>
-
-                <Figure
-                    src={ue45_invoices_table}
-                    alt="Tableau des factures avec filtres, statuts et actions (vue liste)"
-                    title="UE 4.5 — Vue liste pilotée par données (filtres, statuts, envoi par e-mail)"
-                    legendItems={[
-                        "Filtres (mois, modèle, tags) : requêtes paramétrées.",
-                        "Colonnes clés : mois, n° facture, type, total, statut.",
-                        "Icônes : prévisualisation, renvoi, suppression, envoi mail."
-                    ]}
-                    analysis={[
-                        "Savoir : modéliser et présenter des données transactionnelles.",
-                        "Savoir-faire : pagination/tri/filtre + synchronisation des statuts d’envoi.",
-                        "Impact : suivi opérationnel fiable (qu’est-ce qui est envoyé ? à qui ? quand ?)."
-                    ]}
-                />
-
-                <Figure
-                    src={ue45_settings_general}
-                    alt="Paramètres de facturation et jours d’ouverture mensuels"
-                    title="UE 4.5 — Paramétrage métier persistant (prix/forfait, modèle par défaut, jours d’ouverture)"
-                    legendItems={[
-                        "Champs : prix repas, forfait jour (données de référence).",
-                        "Sélecteurs : modèles par défaut (normal/repas).",
-                        "Bloc calendrier : ajout des jours d’ouverture par mois."
-                    ]}
-                    analysis={[
-                        "Savoir : gestion de référentiels et paramètres métiers persistants.",
-                        "Savoir-faire : stockage et restitution cohérente pour les calculs mensuels.",
-                        "Impact : transparence et reproductibilité des montants facturés."
-                    ]}
-                />
-
-                <Figure
-                    src={ue45_smtp}
-                    alt="Configuration SMTP sécurisée (serveur, port, identifiants masqués)"
-                    title="UE 4.5 — Intégration d’un canal d’envoi e-mail (SMTP) sécurisée"
-                    legendItems={[
-                        "Serveur/port : configuration réseau.",
-                        "Identifiants : champs masqués + déverrouillage sécurisé.",
-                        "Expéditeur : nom + adresse utilisés pour les envois automatiques."
-                    ]}
-                    analysis={[
-                        "Savoir : externaliser la configuration d’un service (SMTP) et protéger les secrets.",
-                        "Savoir-faire : paramétrage runtime + masquage des credentials avec flux de déverrouillage.",
-                        "Impact : acheminement fiable des factures par e-mail et traçabilité des envois."
-                    ]}
-                />
 
             </Section>
 
@@ -555,18 +665,21 @@ export default function App() {
                 />
 
                 <ProjectCard
-                    title="Application Web de Facturation (Stage APF France Handicap)"
-                    description="Refonte du processus de facturation usagers (Excel → application web) du recueil au PDF final."
+                    title="Quantic Grand Prix (QuanticGP) — Événement F1"
+                    description="Application web full-stack pour un événement fictif de Formule 1 (style Monaco/GP Explorer) : billetterie, activités sur site et gestion des accès. Front en SPA Vue.js connecté à une API REST Express/Node ; sécurité par rôles et autorisations ; données relationnelles en MySQL."
                     highlights={[
-                        "Problème : feuilles Excel manuelles, erreurs et lenteurs.",
-                        "Solution : UI React + API Node/Express + Prisma/PostgreSQL, édition inline, tri/filtres, génération PDF.",
-                        "Impact : gains de temps et fiabilité, process centralisé et traçable."
+                        "SPA Vue.js : navigation fluide et composants réutilisables",
+                        "API REST Express/Node : logique métier centralisée",
+                        "Sécurité : rôles et autorisations pour fonctionnalités différenciées",
+                        "Base PostgreSQL : modèle relationnel évolutif pour billets/activités/utilisateurs",
+                        "Travail d’équipe (BUT2) : VUILLIN, BALTA, VOELIN, ASLAN, BARTHOD-MALAT"
                     ]}
-                    technologies={["React", "Tailwind CSS", "Node.js", "Express", "Prisma", "PostgreSQL", "Axios", "ReactToPrint"]}
-                    link="https://github.com/estebanEtudiant/Facturation"
-                    imageSrc={facturationImg}
-                    imageAlt="Capture d'écran du projet de facturation"
+                    technologies={["Vue.js (SPA)", "Node.js", "Express", "PostgreSQL", "REST API", "Auth/Rôles"]}
+                    link="https://github.com/SemihAslan123/QuanticGP"
+                    imageSrc={quanticImg}
+                    imageAlt="QuanticGP – carte de l'événement et parcours"
                 />
+
 
                 <p className="mt-8 text-center text-lg text-gray-300">
                     Ce projet a été l'opportunité de concrétiser mes compétences en développant une solution utile et
@@ -653,37 +766,133 @@ export default function App() {
 
             <Timeline/>
 
-            <Section title="Conclusion & Perspectives">
-                <p className="text-gray-300">
-                    Ce stage a solidifié ma passion pour le développement web et m'a doté de compétences pratiques
-                    essentielles. Je suis désormais mieux préparé à relever les défis de projets complexes et à apporter
-                    des solutions innovantes.
-                </p>
-                <p className="mt-4 text-gray-300">
-                    Je suis proactif, curieux et toujours désireux d'apprendre. Je suis à la recherche de nouvelles
-                    opportunités pour mettre mes compétences au service de projets ambitieux et continuer à grandir en
-                    tant que développeur.
-                </p>
-                <motion.div
-                    initial={{opacity: 0, y: 20}}
-                    whileInView={{opacity: 1, y: 0}}
-                    transition={{delay: 0.4, duration: 0.6}}
-                    viewport={{once: true}}
-                    className="text-center mt-10"
-                >
-                    <p className="text-2xl font-semibold text-blue-400 mb-4">Prêt à collaborer sur votre prochain
-                        projet?</p>
-                    <motion.a
-                        whileHover={{scale: 1.05, backgroundColor: "#2563EB"}}
-                        whileTap={{scale: 0.95}}
-                        href="#contact"
-                        className="inline-flex items-center justify-center px-8 py-4 border border-transparent text-base font-medium rounded-full text-white bg-blue-600 hover:bg-blue-700 transition duration-300 shadow-xl transform hover:-translate-y-1"
-                    >
-                        Discutons-en!
-                        <FaEnvelope className="ml-3 text-xl"/>
-                    </motion.a>
-                </motion.div>
+            <Section title="Objectifs de progression" id="progression">
+                <div className="bg-gray-900/40 border border-gray-700 rounded-lg p-4 text-base space-y-4">
+                    <p className="font-semibold text-lg">Bilan & pistes d’amélioration (niveau BUT2)</p>
+
+                    {/* UE 4.1 */}
+                    <div>
+                        <p className="font-semibold">UE 4.1 — Produit & code</p>
+                        <ul className="list-disc pl-5 space-y-2">
+                            <li>
+                                <b>Règles de saisie cohérentes</b> (mêmes vérifications côté interface et côté API).
+                                <div className="text-gray-300 text-sm">
+                                    <span className="font-medium">But :</span> messages d’erreur clairs et identiques partout.<br/>
+                                    <span className="font-medium">Idée :</span> partager les mêmes règles de validation.
+                                </div>
+                            </li>
+
+                            <li>
+                                <b>Suppression plus sûre</b> (boîte de confirmation + possibilité d’annuler juste après).
+                                <div className="text-gray-300 text-sm">
+                                    <span className="font-medium">But :</span> éviter les suppressions par erreur.
+                                </div>
+                            </li>
+
+                            <li>
+                                <b>Retour visuel rapide</b> pour l’envoi d’e-mail (l’interface change tout de suite puis confirme avec le serveur).
+                                <div className="text-gray-300 text-sm">
+                                    <span className="font-medium">But :</span> interface plus réactive, sans incohérence.
+                                </div>
+                            </li>
+
+                            <li>
+                                <b>Composant réutilisable</b> {`<InvoiceRow />`} pour la ligne de facture.
+                                <div className="text-gray-300 text-sm">
+                                    <span className="font-medium">But :</span> code plus simple à maintenir quand la liste grandit.
+                                </div>
+                            </li>
+
+                            <li>
+                                <b>Accessibilité de base</b> (navigation au clavier, focus visible).
+                                <div className="text-gray-300 text-sm">
+                                    <span className="font-medium">But :</span> utilisation plus confortable pour tous.
+                                </div>
+                            </li>
+                        </ul>
+                    </div>
+
+                    {/* UE 4.4 */}
+                    <div>
+                        <p className="font-semibold">UE 4.4 — Données & perfs</p>
+                        <ul className="list-disc pl-5 space-y-2">
+                            <li>
+                                <b>Index sur les colonnes filtrées</b> (ex. mois, modèle, statut) + <b>numéro de facture unique</b> (année, numéro).
+                                <div className="text-gray-300 text-sm">
+                                    <span className="font-medium">But :</span> recherches plus rapides et numérotation fiable.
+                                </div>
+                            </li>
+
+                            <li>
+                                <b>Pagination côté serveur</b> avec <b>tri</b> et <b>recherche</b>.
+                                <div className="text-gray-300 text-sm">
+                                    <span className="font-medium">But :</span> réponses légères, tableau fluide même avec beaucoup de données.
+                                </div>
+                            </li>
+
+                            <li>
+                                <b>Export CSV</b> en respectant les filtres actifs.
+                                <div className="text-gray-300 text-sm">
+                                    <span className="font-medium">But :</span> partage direct dans Excel/LibreOffice.
+                                </div>
+                            </li>
+
+                            <li>
+                                <b>Journal d’envoi e-mail</b> (succès/échec, heure) avec quelques <b>réessais automatiques</b>.
+                                <div className="text-gray-300 text-sm">
+                                    <span className="font-medium">But :</span> comprendre rapidement les problèmes d’envoi.
+                                </div>
+                            </li>
+                        </ul>
+                    </div>
+
+                    {/* Transverse */}
+                    <div>
+                        <p className="font-semibold">Transverse — Qualité & usage</p>
+                        <ul className="list-disc pl-5 space-y-2">
+                            <li>
+                                <b>Tester les chemins importants</b> (montant total, génération PDF, filtre par mois).
+                                <div className="text-gray-300 text-sm">
+                                    <span className="font-medium">But :</span> sécuriser ce qui sert tous les jours.
+                                </div>
+                            </li>
+
+                            <li>
+                                <b>Configuration propre</b> (<code>.env.example</code> + vérification au démarrage).
+                                <div className="text-gray-300 text-sm">
+                                    <span className="font-medium">But :</span> éviter les erreurs de variables manquantes.
+                                </div>
+                            </li>
+
+                            <li>
+                                <b>Mini check-list de recette</b> (ouvrir un modèle, générer un PDF, filtrer un mois, envoyer un mail test).
+                                <div className="text-gray-300 text-sm">
+                                    <span className="font-medium">But :</span> livrer sans bug bloquant.
+                                </div>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
             </Section>
+
+
+
+
+            
+
+    <Section title="Conclusion">
+        <p>
+            Ce stage m’a surtout appris à <b>transformer un besoin métier en produit testable</b> : génération de documents fiable
+            <i> (fig. 1)</i>, <b>écran liste</b> piloté par les données <i>(fig. 4)</i>, <b>paramétrage persistant</b> <i>(fig. 5)</i>
+            et <b>envoi traçable</b> <i>(fig. 6)</i>. J’ai pris du recul sur les compromis (perfs d’impression, dépendance navigateur)
+            et leur impact utilisateur.
+        </p>
+        <ul className="list-disc pl-5 space-y-2">
+            <li><b>Compétences consolidées</b> — UE 4.1 (conception, qualité, sécurité) et UE 4.4 (modélisation, filtres, traçabilité).</li>
+            <li><b>Points de vigilance</b> — Volume de données en impression, maintenabilité des gabarits.</li>
+            <li><b>Suite directe</b> — Les axes concrets sont listés dans <a href="#progression" className="underline">Objectifs de progression</a>.</li>
+        </ul>
+    </Section>
 
             <Section title="Me Contacter" id="contact"
                      className="bg-gray-900 text-white rounded-t-3xl mt-12 shadow-xl border-t border-blue-800/50">
@@ -692,7 +901,7 @@ export default function App() {
                 <div className="flex justify-center space-x-8 text-4xl">
                     <motion.a
                         whileHover={{scale: 1.3, color: "#3B82F6"}}
-                        href="mailto:esteban@example.com"
+                        href="mailto:esteban.barthod-malat@edu.univ-fcomte.fr"
                         className="transition-colors duration-300"
                         aria-label="Envoyer un email"
                     >
@@ -700,7 +909,7 @@ export default function App() {
                     </motion.a>
                     <motion.a
                         whileHover={{scale: 1.3, color: "#60A5FA"}}
-                        href="https://github.com/tonprofil"
+                        href="https://github.com/estebanEtudiant"
                         target="_blank"
                         rel="noopener noreferrer"
                         className="transition-colors duration-300"
@@ -710,7 +919,7 @@ export default function App() {
                     </motion.a>
                     <motion.a
                         whileHover={{scale: 1.3, color: "#2563EB"}}
-                        href="https://linkedin.com/in/tonprofil"
+                        href="https://www.linkedin.com/in/esteban-barthod-malat-419aa1339/"
                         target="_blank"
                         rel="noopener noreferrer"
                         className="transition-colors duration-300"
