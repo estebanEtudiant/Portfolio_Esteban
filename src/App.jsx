@@ -248,7 +248,7 @@ const Timeline = () => (
             <TimelineItem
                 date="19 mai – 30 mai 2025"
                 title="Début du développement"
-                description="MCD, scaffolding projet, endpoints CRUD usagers/services, UI de base."
+                description="MCD, structure du projet, routes API CRUD usagers/services, UI de base."
                 index={1}
             />
             <TimelineItem
@@ -260,7 +260,7 @@ const Timeline = () => (
             <TimelineItem
                 date="24 juin – 11 juillet 2025"
                 title="Finalisation & optimisation"
-                description="Tests, simplification UX, corrections, doc d’installation/livraison."
+                description="Simplification UX, corrections, doc d’utilisation."
                 index={3}
             />
         </div>
@@ -277,7 +277,7 @@ const ProfilePicture = () => (
     >
         <img
             src={tetePhotoImg}
-            alt="Esteban - Développeur Web"
+            alt="Esteban - Étudiant en informatique"
             className="rounded-full w-40 h-40 object-cover border-4 border-blue-400 shadow-xl"
         />
     </motion.div>
@@ -339,15 +339,16 @@ export default function App() {
                     transition={{delay: 0.3, duration: 0.6}}
                     className="text-6xl sm:text-7xl font-extrabold tracking-tight drop-shadow-lg leading-tight"
                 >
-                    Esteban <span className="text-blue-400">Développeur Web</span>
+                    Esteban <span className="text-blue-400">Étudiant en informatique</span>
                 </motion.h1>
+
                 <motion.p
                     initial={{opacity: 0, y: 20}}
                     animate={{opacity: 1, y: 0}}
                     transition={{delay: 0.6, duration: 0.6}}
                     className="mt-6 text-2xl sm:text-3xl font-light max-w-2xl mx-auto text-gray-200"
                 >
-                    Étudiant en BUT Informatique, passionné par le développement d'applications web modernes et
+                Étudiant en BUT Informatique, passionné par le développement d'applications web modernes et
                     performantes.
                 </motion.p>
                 <div className="mt-6 flex flex-wrap gap-2 justify-center">
@@ -410,12 +411,9 @@ export default function App() {
                             <li><b>Architecture :</b> React (UI modulaire) + API Node/Express (auth, rôles, PDF).</li>
                             <li><b>Qualité :</b> composants réutilisables, validation, gestion d’erreurs.</li>
                             <li><b>Sécurité :</b> réinitialisation de mot de passe, journalisation connexions.</li>
-                            <li><b>Livrable :</b> appli utilisable + doc d’installation.</li>
+                            <li><b>Livrable :</b> appli utilisable + doc d’utilisation.</li>
                         </ul>
-                        <div className="mt-3 text-sm opacity-80">
-                            <span className="font-medium">Traces :</span> captures (auth, PDF), extraits de code
-                            (routes, validation).
-                        </div>
+
                     </article>
 
                     <p className="text-base text-gray-300">
@@ -450,13 +448,13 @@ export default function App() {
                         alt="Éditeur visuel de modèle de facture avec variables"
                         title="Figure 2 - UE 4.1 — Conception de template dynamique (liaison données → variables)"
                         legendItems={[
-                            "Bleu : bloc éditable du template.",
+                            "Zones éditables du template (couleurs d’aide visuelle).",
                             "Accolades {{...}} : variables injectées (date, numéro, usager, prix).",
                             "Panneaux latéraux : calques, styles, propriétés."
                         ]}
                         analysis={[
                             "Savoir : templating et séparation contenu/présentation.",
-                            "Savoir-faire : création d’un modèle éditable (GrapesJS-like) relié aux champs de l’app.",
+                            "Savoir-faire : création d’un modèle éditable (GrapesJS) relié aux champs de l’app.",
                             "Impact : autonomie métier pour ajuster la mise en page sans toucher le code."
                         ]}
                     />
@@ -476,7 +474,7 @@ export default function App() {
                             "Boutons d’action : validation, enregistrement."
                         ]}
                         analysis={[
-                            "Savoir : principes d’UX sécurisée (verrouillage, feedback, rôles).",
+                            "Savoir : principes d’UX sécurisée (verrouillage, rôles).",
                             "Savoir-faire : mise en place de garde-fous côté UI et flux de reset administrateur.",
                             "Impact : réduction des erreurs et protection des paramètres sensibles."
                         ]}
@@ -487,14 +485,10 @@ export default function App() {
                     <article className="mb-6">
                         <ul className="list-disc pl-5 space-y-2 text-base">
                             <li><b>Modélisation & SQL :</b> schéma PostgreSQL, vues, index.</li>
-                            <li><b>Intégration :</b> requêtes paramétrées, filtres, pagination, agrégations.</li>
+                            <li><b>Intégration :</b> requêtes paramétrées, filtres.</li>
                             <li><b>Traçabilité :</b> table de logs, graphiques de suivi.</li>
-                            <li><b>Valorisation :</b> heatmap/plots, export PDF, filtres dynamiques.</li>
+                            <li><b>Valorisation :</b> heatmap, export PDF, filtres dynamiques.</li>
                         </ul>
-                        <div className="mt-3 text-sm opacity-80">
-                            <span className="font-medium">Traces :</span> schéma DB, requêtes, captures
-                            (filtres/exports).
-                        </div>
                     </article>
 
 
@@ -516,7 +510,7 @@ export default function App() {
                         ]}
                         analysis={[
                             "Savoir : modéliser et présenter des données transactionnelles.",
-                            "Savoir-faire : pagination/tri/filtre + synchronisation des statuts d’envoi.",
+                            "Savoir-faire : tri/filtre + synchronisation des statuts d’envoi.",
                             "Impact : suivi opérationnel fiable (qu’est-ce qui est envoyé ? à qui ? quand ?)."
                         ]}
                     />
@@ -524,9 +518,7 @@ export default function App() {
                     <p className="mt-4 text-base text-gray-300">
                         Le <b>paramétrage métier</b> (prix, forfait, modèles par défaut, jours d’ouverture) est
                         centralisé
-                        et <b>persisté</b> pour garantir des calculs mensuels reproductibles. Chaque variable a un
-                        format
-                        contrôlé (bornes, types) afin de limiter les erreurs de saisie
+                        et <b>persisté</b> pour garantir des calculs mensuels reproductibles
                         <i> (voir figure&nbsp;5)</i>.
                     </p>
 
@@ -590,15 +582,10 @@ export default function App() {
                         <li>
                             <b>Limites assumées</b> — Impression de longues listes (latence), dépendance au navigateur
                             pour le PDF, gabarits
-                            encore perfectibles. Contournements : filtrage/pagination, gabarits testés, journal d’envoi
-                            pour diagnostiquer
+                            encore perfectibles
                             <i> (voir figure&nbsp;6)</i>.
                         </li>
-                        <li>
-                            <b>Transférabilité</b> — Le pattern “données → template → rendu → export” s’applique à
-                            devis, attestations, relevés
-                            d’heures, etc. (adapter juste l’ORM et le moteur d’export).
-                        </li>
+
                     </ul>
                 </div>
 
@@ -621,9 +608,9 @@ export default function App() {
                         icon={<FaNodeJs size={40}/>}
                     />
                     <Card
-                        title="Optimisation & Qualité Log."
-                        description="Application des principes de code propre, refactoring, gestion des états et optimisation des performances (useMemo, useCallback)."
-                        technologies={["React Hooks", "useMemo", "useCallback", "Clean Code"]}
+                        title="Optimisation & Qualité logicielle"
+                        description="Application des principes de code propre et refactoring."
+
                         icon={<FaTools size={40}/>}
                     />
                     <Card
@@ -652,7 +639,7 @@ export default function App() {
                      className="bg-gradient-to-br from-gray-800 to-gray-900 rounded-xl my-12 shadow-lg border border-blue-700">
                 <ProjectCard
                     title="Application Web de Facturation (Stage APF France Handicap)"
-                    description="Refonte du processus de facturation usagers (Excel → application web) du recueil au PDF final."
+                    description="Refonte du processus de facturation usagers (Excel → application web)."
                     highlights={[
                         "Problème : feuilles Excel manuelles, erreurs et lenteurs.",
                         "Solution : UI React + API Node/Express + Prisma/PostgreSQL, édition inline, tri/filtres, génération PDF.",
@@ -668,13 +655,13 @@ export default function App() {
                     title="Quantic Grand Prix (QuanticGP) — Événement F1"
                     description="Application web full-stack pour un événement fictif de Formule 1 (style Monaco/GP Explorer) : billetterie, activités sur site et gestion des accès. Front en SPA Vue.js connecté à une API REST Express/Node ; sécurité par rôles et autorisations ; données relationnelles en PostgreSQL."
                     highlights={[
-                        "SPA Vue.js : navigation fluide et composants réutilisables",
-                        "API REST Express/Node : logique métier centralisée",
+                        "Vue.js : navigation fluide et composants réutilisables",
+                        "API REST Express/Node",
                         "Sécurité : rôles et autorisations pour fonctionnalités différenciées",
                         "Base PostgreSQL : modèle relationnel évolutif pour billets/activités/utilisateurs",
                         "Travail d’équipe (BUT2) : VUILLIN, BALTA, VOELIN, ASLAN, BARTHOD-MALAT"
                     ]}
-                    technologies={["Vue.js (SPA)", "Node.js", "Express", "PostgreSQL", "REST API", "Auth/Rôles"]}
+                    technologies={["Vue.js", "Node.js", "Express", "PostgreSQL", "REST API", "Auth/Rôles"]}
                     link="https://github.com/SemihAslan123/QuanticGP"
                     imageSrc={quanticImg}
                     imageAlt="QuanticGP – carte de l'événement et parcours"
@@ -721,7 +708,7 @@ export default function App() {
                             </motion.li>
                             <motion.li initial={{opacity: 0, x: -20}} whileInView={{opacity: 1, x: 0}}
                                        transition={{delay: 0.6}}>Mise en place de fonctionnalités clés : édition inline,
-                                tri, filtres avancés, génération de factures PDF.
+                                tri, filtres, génération de factures PDF.
                             </motion.li>
                         </ul>
                     </motion.div>
@@ -735,27 +722,43 @@ export default function App() {
                         <h3 className="text-2xl font-semibold text-white mb-4">Apports & Réalisations</h3>
                         <ul className="list-disc list-inside space-y-3 text-lg text-gray-300">
                             <motion.li initial={{opacity: 0, x: 20}} whileInView={{opacity: 1, x: 0}}
-                                       transition={{delay: 0.2}}>Découverte et maîtrise de <strong
-                                className="text-blue-400">Prisma ORM</strong>, un outil puissant pour l'interaction avec
-                                la base de données.
+                                       transition={{delay: 0.2}}>
+                                Montée en compétences sur <strong className="text-blue-400">React</strong> :
+                                composants, gestion d’état (props/state), hooks
+                                (<code>useState</code>, <code>useEffect</code>),
+                                formulaires et appels API.
                             </motion.li>
+
                             <motion.li initial={{opacity: 0, x: 20}} whileInView={{opacity: 1, x: 0}}
-                                       transition={{delay: 0.3}}>Optimisation des performances de l'application
-                                (limitation des re-rendus React, gestion des appels API).
+                                       transition={{delay: 0.3}}>
+                                Découverte et maîtrise de <strong className="text-blue-400">Prisma ORM</strong>, un
+                                outil puissant
+                                pour l'interaction avec la base de données.
                             </motion.li>
+
                             <motion.li initial={{opacity: 0, x: 20}} whileInView={{opacity: 1, x: 0}}
-                                       transition={{delay: 0.4}}>Amélioration significative de l'expérience utilisateur
-                                par l'intégration de fonctionnalités ergonomiques.
+                                       transition={{delay: 0.4}}>
+                                Optimisation des performances de l'application (limitation des re-rendus React, gestion
+                                des appels API).
                             </motion.li>
+
                             <motion.li initial={{opacity: 0, x: 20}} whileInView={{opacity: 1, x: 0}}
-                                       transition={{delay: 0.5}}>Contribution à l'organisation du parc informatique et
-                                installation de postes en autonomie.
+                                       transition={{delay: 0.5}}>
+                                Amélioration significative de l'expérience utilisateur par l'intégration de
+                                fonctionnalités ergonomiques.
                             </motion.li>
+
                             <motion.li initial={{opacity: 0, x: 20}} whileInView={{opacity: 1, x: 0}}
-                                       transition={{delay: 0.6}}>Développement de compétences en autonomie, rigueur, et
-                                analyse fonctionnelle en contexte professionnel.
+                                       transition={{delay: 0.6}}>
+                                Contribution à l'organisation du parc informatique et installation de postes en autonomie.
+                            </motion.li>
+
+                            <motion.li initial={{opacity: 0, x: 20}} whileInView={{opacity: 1, x: 0}}
+                                       transition={{delay: 0.7}}>
+                                Développement de compétences en autonomie, rigueur, et analyse fonctionnelle en contexte professionnel.
                             </motion.li>
                         </ul>
+
                     </motion.div>
                 </div>
                 <p className="mt-8 text-center italic text-xl text-gray-400">
@@ -800,7 +803,7 @@ export default function App() {
                         <p className="mt-2 text-sm text-gray-300 font-medium">Ce que j’ai déjà fait</p>
                         <ul className="list-disc pl-5 space-y-1">
                             <li>Index sur les colonnes de filtre + contrainte d’unicité sur le numéro de facture.</li>
-                            <li>Journal d’envoi des e-mails (succès/échec + horodatage) et barre de progression lors des envois.</li>
+                            <li>Journal d’envoi des e-mails (succès/échec) et barre de progression lors des envois.</li>
                             <li>Tri et recherche sur la liste des factures.</li>
                         </ul>
 
@@ -837,14 +840,13 @@ export default function App() {
         <p>
             Ce stage m’a surtout appris à <b>transformer un besoin métier en produit testable</b> : génération de documents fiable
             <i> (fig. 1)</i>, <b>écran liste</b> piloté par les données <i>(fig. 4)</i>, <b>paramétrage persistant</b> <i>(fig. 5)</i>
-            et <b>envoi traçable</b> <i>(fig. 6)</i>. J’ai pris du recul sur les compromis (perfs d’impression, dépendance navigateur)
+            et <b>envoi traçable</b> <i>(fig. 6)</i>. J’ai pris du recul sur les compromis
             et leur impact utilisateur.
         </p>
         <ul className="list-disc pl-5 space-y-2">
             <li><b>Compétences consolidées</b> — UE 4.1 (conception, qualité, sécurité) et UE 4.4 (modélisation, filtres, traçabilité).</li>
             <li><b>Points de vigilance</b> — Latence à l’impression de listes longues et maintenabilité des gabarits.
             </li>
-            <li><b>Suite directe</b> — Les axes concrets sont listés dans <a href="#progression" className="underline">Objectifs de progression</a>.</li>
         </ul>
     </Section>
 
