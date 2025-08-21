@@ -1,12 +1,17 @@
-node_modules/
-dist/
+# Dépendances / builds
+/node_modules/
+/dist/
+/build/
+
+# Caches
+/.cache/
+/node_modules/.cache/
+
+# OS / logs
 .DS_Store
 *.log
-# caches (dont gh-pages)
-node_modules/.cache/
-node_modules/
-dist/
-node_modules/.cache/
-node_modules/
-dist/
-node_modules/.cache/
+
+# Outils courants (optionnel)
+/coverage/
+/.vscode/
+/.idea/
